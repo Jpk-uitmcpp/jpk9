@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Sijil Aktiviti JPK</title>
+    <link rel="icon" type="image/png" href="assets/icon_jpk.png"> <!-- Favicon Link -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 100px; /* Add margin to avoid overlap with fixed header */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #782982;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* Styles for date, time, and day */
+        .datetime-container {
+            text-align: right;
+            font-size: 16px;
+            color: #333;
+            position: absolute;
+            top: 75px;
+            right: 10px;
+        }
+
+        #currentDate, #currentTime {
+            display: block; /* Display each on a new line */
+        }
+
+        #currentDate {
+            font-weight: bold;
+        }
+
+        #currentTime {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .note {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 97%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-button {
+            background-color: #782982;
+            color: #fff;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            background-color: #5a1f63;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #782982;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-weight: bold;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .home-button:hover {
+            background-color: #5a1f63;
+        }
+
+        /* Styles for fixed header */
+        .schedule-header {
+            background-color: #782982;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            width: 100%;
+            position: fixed; /* Fix the header at the top */
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Make sure the header stays on top */
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="schedule-header">
+    e-SIJIL AKTIVITI JPK
+</div>
+
+    <div class="datetime-container">
+        <span id="currentDate"></span>
+        <span id="currentTime"></span>
+    </div>
+
+<div class="container">
+    <div class="header">
+        Butiran Maklumat Penerima e-Sijil
+    </div>
+    <div class="note">
+        <strong><i>*Sila lengkapkan butiran di bawah dengan maklumat yang betul bagi pensijilan digital.</i></strong>
+    </div>
+    <form id="complaintForm">
+        <div class="form-group">
+            <label for="entry.615567140">EMAIL</label>
+            <input type="text" id="entry.615567140" name="entry.615567140" required>
+        </div>
+        <div class="form-group">
+            <label for="entry.1405286175">NAMA PENUH (HURUF BESAR)</label>
+            <input type="text" id="entry.1405286175" name="entry.1405286175" required>
+        </div>
+        <div class="form-group">
+            <label for="entry.53977227">NOMBOR PELAJAR</label>
+            <input type="text" id="entry.53977227" name="entry.53977227" required>
+        </div>
+        
+        <button type="submit" class="submit-button">Hantar Maklumat</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('complaintForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Prepare the form data
+        const formData = new FormData(this);
+
+        // Google Forms URL
+        const url = 'https://docs.google.com/forms/d/e/1FAIpQLSfmgrKoF0yhnx11pCeDKNEhlkE6LOo7V2Y3GrajGMpmguVnuA/formResponse';
+
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors' // Use 'no-cors' mode to handle Google Forms CORS policy
+        })
+        .then(() => {
+            // Display success alert
+            alert('Link sijil akan dihantar ke email masing-masing, sila semak email dan lengkapkan dengan kadar segera!');
+            // Optionally, reset the form
+            document.getElementById('complaintForm').reset();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ralat dalam penghantaran.');
+        });
+    });
+
+    function updateDateTime() {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString('en-MY', options);
+        const formattedTime = now.toLocaleTimeString('en-MY');
+
+        document.getElementById('currentDate').innerHTML = formattedDate;
+        document.getElementById('currentTime').innerHTML = formattedTime;
+    }
+
+    // Update time every second
+    setInterval(updateDateTime, 1000);
+    updateDateTime(); // Initial call
+</script>
+
+</body>
+</html>
